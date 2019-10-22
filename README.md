@@ -6,7 +6,7 @@ _这篇文章是我在2018年8月10日撰写的，当时水平不足，导致文
 
 _修改后的文章会更加严肃。有任何问题或建议，欢迎提出Issue或直接发送Pull Request。_
 
-_联系我：[Telegram @KumaTea](t.me/kumatea)_
+_联系我：[Telegram @KumaTea](https://t.me/kumatea)_
 
 ---
 
@@ -196,7 +196,7 @@ md5sum /home/kumatea/k2p/mentohust/src/mentohust
 
 # 刷入Breed
 
-### 下方工具方法已经过时，请使用[K2P_Telnet.exe](files/firmware/K2P_Telnet.exe)
+### [更新] 下方工具方法已经过时，请使用[K2P_Telnet.exe](files/firmware/K2P_Telnet.exe)
 
 **工具 / 步骤 / 参考文献 / 请先阅读**
 1. [[k2p] K2/K2P/K3/K3C 新版固件 Telnet 激活工具
@@ -234,6 +234,9 @@ wget <你的k2p.sh地址> -O - |sh
 ---
 
 # 刷入OpenWrt
+
+### [更新] 目前已换用对**IPv6多线多拨负载均衡**支持良好的：
+### [k2p-openwrt R9.10.1固件](https://www.right.com.cn/forum/thread-1008147-1-1.html)，作者是[haoreng](https://www.right.com.cn/forum/space-uid-15139.html)
 
 **工具 / 步骤 / 参考文献 / 请先阅读：**
 1. [K2P PandoraBox](https://downloads.pangubox.com/pandorabox/19.02/targets/ralink/mt7621/packages/)，作者是[Lintel](https://www.right.com.cn/forum/space-uid-37585.html)；
