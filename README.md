@@ -1,5 +1,16 @@
 # 支持锐捷认证与IPv6的路由器配置指南：以K2P为例
 
+### 写在「写在前言之前」之前：
+最近稍微学习了一下OpenWRT的编译，参照[coolsnowwolf/lede](https://github.com/coolsnowwolf/lede)尝试自己制作了固件，体验下来效果还不错，在此鸣谢作者～
+
+[该固件](files/firmware/K2P_R9_11_23_MentoHUST.bin) **集成了MentoHUST** ，其他则尽可能精简。编译时为 `R9.11.23` 版本。
+
+如果您也使用K2P，同时也是极简主义者 / 热爱DIY，可以尝试使用下。
+
+[MentoHUST可执行文件直达链接](files/18064/mentohust_k2p_openwrt_18064)
+
+---
+
 _写在前言之前：_
 
 _这篇文章是我在2018年8月10日撰写的，当时水平不足，导致文章有不少谬误；且后来[简书](https://www.jianshu.com)平台出现过一段时间不可访问的情况，让我决定作修改后搬来GitHub上。_
@@ -393,8 +404,9 @@ exit 0
 
 MentoHUST：
 * [15052](files/15052/mentohust_k2p_openwrt_15052)
-* [15052](files/18064/mentohust_k2p_openwrt_18064)
+* [18064](files/18064/mentohust_k2p_openwrt_18064)
 
 2018年8月10日 第一版
 2018年12月21日 小修改
 2019年10月22日 第二版
+2019年12月02日 小修改
