@@ -18,14 +18,12 @@ cp mentohust.gz /usr/bin
 启动项：
 ```shell script
 # startup
-cd /tmp
-mkdir mentohust
-cd mentohust
+mkdir /tmp/mentohust
 
 cp /usr/bin/mentohust.gz /tmp/mentohust
-tar -xzf mentohust.gz
-rm mentohust.gz
-chmod 755 mentohust
+tar -xzf /tmp/mentohust/mentohust.gz -C /tmp/mentohust
+rm /tmp/mentohust/mentohust.gz
+chmod 755 /tmp/mentohust/mentohust
 
-/usr/bin/mentohust <*args>
+/tmp/mentohust/mentohust <*args>
 ```
