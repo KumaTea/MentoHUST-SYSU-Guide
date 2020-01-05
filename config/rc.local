@@ -1,0 +1,23 @@
+# Put your custom commands here that should be executed once
+# the system init finished. By default this file does nothing.
+
+# mentohust
+/usr/bin/mentohust [REDACTED]
+
+# mt wifi
+ifconfig rax0 up
+ifconfig ra0 up
+ifconfig apclix0 up
+ifconfig apcli0 up
+
+# ipv6
+# old method
+# sleep 300s
+# new method
+while ! ip a | grep 2001
+do
+sleep 10s
+done
+route -A inet6 add default gw [REDACTED]
+
+exit 0
