@@ -46,10 +46,11 @@ _联系我：[Telegram @KumaTea](https://t.me/kumatea)_
 使用“路由追踪” (Windows: tracert; Linux: traceroute) 命令，可以方便的知道你的网关。
 
 例如，在Windows下，请使用有线上网的方式，追踪一个IPv6地址，例如：
+
 ```cmd
 tracert tv.byr.cn
-
 ```
+
 然后记录第一条地址（应该以 2xxx: 开头，不应以 fe80: 开头；记录包含冒号的完整地址）即可。
 
 ---
@@ -92,18 +93,17 @@ tracert tv.byr.cn
 
 一 安装Ubuntu完毕后，打开终端 (Terminal)，前往 `home` （本指南用户名采用`kumatea`），并创建一个目录。
 
-```shell script
+```bash
 cd /home/kumatea
 mkdir k2p
 cd k2p
-
 ```
 
 二 到[OpenWrt的官网](http://downloads.openwrt.org)下载适用于你的路由器的芯片和**当前版本系统**的交叉编译工具包 (SDK)。
 
 本指南使用的是[18.06.4版的SDK](http://downloads.openwrt.org/releases/18.06.4/targets/ramips/mt7621/openwrt-sdk-18.06.4-ramips-mt7621_gcc-7.3.0_musl.Linux-x86_64.tar.xz)。
 
-```shell script
+```bash
 wget http://downloads.openwrt.org/releases/18.06.4/targets/ramips/mt7621/openwrt-sdk-18.06.4-ramips-mt7621_gcc-7.3.0_musl.Linux-x86_64.tar.xz -O sdk.tar.xz
 
 tar -xJf sdk.tar.xz
@@ -115,17 +115,15 @@ mv openwrt-sdk-18.06.4-ramips-mt7621_gcc-7.3.0_musl.Linux-x86_64 sdk
 # 如果不使用WSL，你还可以使用GUI操作
 
 rm sdk.tar.xz
-
 ```
 
 三 下载libpcap，[撰文时最新为1.9.1版](https://www.tcpdump.org/release/libpcap-1.9.1.tar.gz)，解压到此目录下，注意命令不同：
 
-```shell script
+```bash
 wget https://www.tcpdump.org/release/libpcap-1.9.1.tar.gz -O libpcap.tar.gz
 tar -xzf libpcap.tar.gz
 mv libpcap-1.9.1 libpcap
 rm libpcap.tar.gz
-
 ```
 
 四 把前面做好的MentoHUST的文件夹放到该目录下。
@@ -136,13 +134,13 @@ rm libpcap.tar.gz
 
 **首先把下面代码的`kumatea`换成你所创建的账户名，并修改为你自定义的文件夹名，尤其是PATH=$PATH:和STAGING_DIR=这里**，再（建议逐行复制）运行下面的命令：
 
-```shell script
+```bash
 sudo -i
 apt install build-essential bison flex zlib1g-dev libncurses5-dev subversion quilt intltool ruby fastjar unzip gawk autogen autopoint ccache gettext libssl-dev xsltproc zip git
 # 大约需要下载55MB
 ```
 
-```shell script
+```bash
 PATH=$PATH:/home/kumatea/k2p/sdk/staging_dir/toolchain-mipsel_24kc_gcc-7.3.0_musl/bin
 export PATH
 STAGING_DIR=/home/kumatea/k2p/sdk/staging_dir/toolchain-mipsel_24kc_gcc-7.3.0_musl
@@ -162,11 +160,11 @@ export CFLAGS="-Os -s"
 **`RANLIB`要根据`sdk`里目录的结尾修改**。这个例子，结尾是`musl`，因此`export RANLIB=mipsel-openwrt-linux-musl-ranlib`。如果你的结尾是`uClibc`，就应该改成`export RANLIB=mipsel-openwrt-linux-uclibc-ranlib`。
 
 然后cd进入`libpcap`文件夹并执行命令，**要更改`--prefix`路径**：
-```shell script
+
+```bash
 cd /home/kumatea/k2p/libpcap
 ./configure --host=mipsel-linux --prefix=/home/kumatea/k2p/ --with-pcap=linux
 make
-
 ```
 `./configure`部分不应出错；
 
@@ -178,11 +176,10 @@ make
 
 首先，要获取一下我们自己所在的平台：
 
-```shell script
+```bash
 cd /home/kumatea/k2p/mentohust
 sh autogen.sh
 ./config.guess
-
 ```
 
 这时终端会输出你的平台：
@@ -190,16 +187,15 @@ sh autogen.sh
 
 例如虚拟机是`x86_64-pc-linux-uclibc`，WSL是`x86_64-pc-linux-gnu`；替换到下面的`--build`，再执行：
 
-```shell script
+```bash
 ./configure --build=x86_64-pc-linux-gnu --host=mipsel-linux   --disable-encodepass --disable-notify --with-pcap=/home/kumatea/k2p/libpcap/libpcap.a
 make
-
 ```
 
 这个时候，如果运行无误，就可以进入/home/kumatea/k2p/mentohust/src，获取`mentohust`文件了。你也可以立即计算MD5，确保后续操作时文件保持原样。
 ![文件如图，仅供参考](images/compiled.png)
 
-```shell script
+```bash
 md5sum /home/kumatea/k2p/mentohust/src/mentohust
 ```
 
@@ -224,15 +220,19 @@ md5sum /home/kumatea/k2p/mentohust/src/mentohust
 4. 打开`RoutAckProV1B2.exe`，当路由器LED灯由红变为黄时，立即点击`打开Telnet`按钮。等待出现成功信息，若不成功请再试一次。下图示失败情况：
 ![错误示范](images/no_response.png)
 5. 成功打开Telnet后，连接到你的路由器，可以使用PuTTY等工具连接，也可以用命令提示符：
+
 ```cmd
 telnet 192.168.1.1
 ```
+
 6. 使你在准备步骤中下载的`k2p.sh`文件处于可访问状态。如果路由器不能上网，可以通过ftp服务器的方式上传：
 ![用es文件浏览器开启ftp服务器](images/ftp.jpg)
 然后执行：
-```
+
+```bash
 wget <你的k2p.sh地址> -O - |sh
 ```
+
 来进行Breed刷写。出现`upgrade ok! reboot...`就成功了。
 
 7 进入Breed：
@@ -282,6 +282,7 @@ wget <你的k2p.sh地址> -O - |sh
 ![ssh](images/ssh.png)
 
 运行```/usr/bin/mentohust -h```可以获取帮助。
+
 ```
 >用法:	/usr/bin/mentohust [-选项][参数]
 选项:	-h 显示本帮助信息
@@ -307,6 +308,7 @@ wget <你的k2p.sh地址> -O - |sh
 	-c DHCP脚本[默认dhclient]
 	-q 显示SuConfig.dat的内容(如-q/path/SuConfig.dat)
 ```
+
 不是全部参数都需要填，我的配置如下：
 
 `/usr/bin/mentohust -u<账号，中间不空格> -p<密码> -neth0.2 -e20 -b3`
@@ -317,7 +319,8 @@ wget <你的k2p.sh地址> -O - |sh
 
 4 为了让路由器断电或重启后还能自动启动认证，我们可以设置其开机启动。
 进入**系统**下的`启动项`，拉到最底的`本地启动脚本`，**在`exit 0`上面**添加你的代码即可。
-```
+
+```bash
 # mentohust
 /usr/bin/mentohust -u<账号，中间不空格> -p<密码> -neth1 -e20 -b3
 ```
@@ -338,7 +341,7 @@ IPv6因为其**几乎**无尽的地址，本身不需要[网络地址转换 (NAT
 
 1 进入[路由管理页面](http://192.168.1.1)，到**系统**下的`软件包`检查是否有`ip6tables`和`kmod-ipt-nat6`。
 
-```
+```bash
 opkg update
 opkg install ip6tables
 opkg install kmod-ipt-nat6
@@ -353,7 +356,8 @@ opkg install kmod-ipt-nat6
 ![IPv6 Settings](images/ipv6_settings.png)
 
 3 进入[路由管理页面](http://192.168.1.1)，进入**网络**下的`防火墙`，再进入`自定义规则`选项卡，添加以下内容：
-```shell script
+
+```bash
 # iptables -t nat -A PREROUTING -p udp --dport 53 -j REDIRECT --to-ports 53
 # iptables -t nat -A PREROUTING -p tcp --dport 53 -j REDIRECT --to-ports 53
 # IPv6
@@ -364,14 +368,15 @@ ip6tables -t nat -A POSTROUTING -j MASQUERADE
 ip6tables -P INPUT ACCEPT
 ip6tables -P FORWARD ACCEPT
 ip6tables -P OUTPUT ACCEPT
-
 ```
+
 4 手动添加网关。这一步用到了最前面获取的网关。直接在Shell输入下方命令即启动IPv6：
 
 `route -A inet6 add default gw <你的网关>`
 
 但我推荐输到启动项里（`系统` - `启动项` - `本地启动脚本`）：
-```
+
+```bash
 # mentohust
 /usr/bin/mentohust -u<username> -p<password> -neth0.2 -e20 -b1
 # sleep 2s
@@ -382,7 +387,6 @@ ip6tables -P OUTPUT ACCEPT
 # sleep 300s
 route -A inet6 add default gw <网关>
 exit 0
-
 ```
 
 重启路由器，大功告成！
