@@ -13,7 +13,7 @@ NAT野蛮，Relay文明，，，
 ## 网关
 **同NAT：**
 
-`route -A inet6 add default gw [REDACTED]`
+`route -A inet6 add default gw [Your IPv6 Gateway]`
 
 ## 网络
 ### 接口
@@ -27,6 +27,20 @@ NAT野蛮，Relay文明，，，
 * 请求 IPv6 地址 `try`
 * 请求指定长度的 IPv6 前缀 `auto`
 * **高级** - 使用内置的 IPv6 管理 **不选中**
+* 路由通告服务 `中继模式`
+* DHCPv6 服务 `中继模式`
+* NDP 代理 `中继模式`
+
+如果没有上述选项，则在 `/etc/config/dhcp` 手动加入
+
+```
+config dhcp 'wan6'
+        option interface 'wan6'
+        option master '1'
+        option ra 'relay'
+        option dhcpv6 'relay'
+        option ndp 'relay'
+```
 
 ### LAN
 
